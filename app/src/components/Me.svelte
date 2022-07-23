@@ -1,13 +1,28 @@
 <script lang="ts">
     import { SuiteType, type CardType } from '../types/CardType';
     import Card from './Card.svelte';
+    import MyButton from './MyButton.svelte';
 
+    let count = 0;
     let cards : CardType[] = [];
-
     for (let i=0; i<13; i++) {
         cards.push(
             { id: i + 1, suite: SuiteType.Clubs }
         );
+    }
+
+    const changeCardState = (isSelected: boolean) : void => {
+        if (isSelected && allow()) {
+            count++;
+        }
+
+        if (!isSelected) {
+            count--;
+        }
+    };
+    
+    const allow = () : boolean => {
+        return count < 3;
     }
 
 </script>
@@ -15,8 +30,10 @@
 <div class='me-area'>
     <div class="cards-box">
         {#each cards as card}
-            <Card bind:cardType={card}/>
+            <Card card={card} allow={allow} changeCardState={changeCardState}/>
         {/each}
+        <MyButton />
+
     </div>
     <div class="buttons">
         <button>Bet</button>

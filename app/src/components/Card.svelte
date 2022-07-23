@@ -1,26 +1,37 @@
 <script lang="ts">;
     import { SuiteType, type CardType } from '../types/CardType';
-    export let cardType: CardType;
+    export let card: CardType;
+    export let allow = () : boolean => false;
+    export let changeCardState = (isSelected: boolean) : void => {};
 
     let src = "images/spade-2.jpg";
 
-    if (cardType.suite === SuiteType.Spades ) {
+    if (card.suite === SuiteType.Spades ) {
         src = "images/spade-2.jpg";
     }
 
-    let clicked = false;
+    let selected = false;
 
-    const onClick = () => {
-        clicked = !clicked;
-        console.log(clicked);
+    const onChangeState = () => {
+        if (selected ===true) {
+            changeCardState(false);
+            selected = false;
+            return;
+        }
+
+        if (allow()) {
+            changeCardState(true);
+            selected = true;
+            return;
+        }
     }
 
-    $: containerStyle = clicked ? 'container click' : 'container';
+    $: containerStyle = selected ? 'container selected' : 'container';
 </script>
 
 
 <div class="{containerStyle}">
-    <figure on:click="{onClick}">
+    <figure on:click="{onChangeState}">
         <img class="container-card" {src} alt="none" />
         <!-- <figcaption></figcaption> -->
     </figure>
@@ -39,7 +50,7 @@
         }
     }
 
-    .click {
+    .selected {
         align-items: center;
         border: 1px solid #ccc;
         background-color: #55f;
