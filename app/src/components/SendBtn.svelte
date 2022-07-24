@@ -1,12 +1,21 @@
-<div class:button>
-    Send
+<script lang="ts">
+    export let text: string;
+</script>
+
+<div class="button"  on:click>
+    {text}
 </div>
 
-<style>
+<style lang="scss">
     .button {
-        width: 110px;
-        height: 140px;
+        padding: 30px 5px;
         border: 1px solid #ccc;
-        background-color: #03d;
+        border-radius: 10px;
+        background-color: #04f;
+        align-self: center;
+
+        &:hover {
+            background-color: #03d;
+        }
     }
 </style>

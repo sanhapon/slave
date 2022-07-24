@@ -1,16 +1,15 @@
 <script lang="ts">
     export let count = 0;
+    export let text = '';
 
     const handleClick = () => {
         console.log("click");
         count = count + 1;
     }
-    
-
 </script>
 
 <button class="mybutton" on:click={handleClick}>
-    click me
+    {text}
 </button>
 
 <style>

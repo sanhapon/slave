@@ -1,11 +1,12 @@
 <script lang="ts">
     import Me from '../components/Me.svelte';
+    import Table from '../components/Table.svelte';
 </script>
 
 <div class="container">
     <div class="p1">Player 1</div>
     <div class="p2"> 2</div>
-    <div class="tab"><div></div></div>
+    <div class="tab"><Table /></div>
     <div class="p3">Player 3</div>
     <div class="me"><Me /></div>
 </div>
@@ -36,16 +37,6 @@
         .tab {
             grid-column: 2 / span 2;
             grid-row: 2;
-            display: flex;
-            justify-content: center;
-
-            > div {
-                padding: 90px;
-                margin: 9px;
-                background-color: #2e7d32;
-                border-radius: 5rem;
-                border: 2px solid #fbc02d;
-            }
         }
 
         .p3 {

@@ -1,23 +1,31 @@
 <script lang="ts">
+import { prevent_default } from 'svelte/internal';
+
     import { SuiteType, type CardType } from '../types/CardType';
     import Card from './Card.svelte';
-    import MyButton from './MyButton.svelte';
+    import SendBtn from './SendBtn.svelte';
+
+    let cardElements: Card[] = []
 
     let count = 0;
-    let cards : CardType[] = [];
+    let cards: CardType[] = [];
+    let selectedCards: CardType[] = [];
+
     for (let i=0; i<13; i++) {
         cards.push(
-            { id: i + 1, suite: SuiteType.Clubs }
+            { id: i + 1, suite: SuiteType.Hearts }
         );
     }
 
-    const changeCardState = (isSelected: boolean) : void => {
+    const changeCardState = (isSelected: boolean, card: CardType) : void => {
         if (isSelected && allow()) {
             count++;
+            selectedCards = [...selectedCards, card];
         }
 
         if (!isSelected) {
             count--;
+            selectedCards = selectedCards.filter(item => (item.id !== card.id || item.suite !== item.suite));
         }
     };
     
@@ -25,25 +33,30 @@
         return count < 3;
     }
 
+    const onSend = () => {
+        for(let card of selectedCards) {
+            const x: Card = cardElements[card.id];
+            x.setBlank();
+        }
+        count = 0;
+    }
+
 </script>
 
 <div class='me-area'>
     <div class="cards-box">
         {#each cards as card}
-            <Card card={card} allow={allow} changeCardState={changeCardState}/>
+            <Card card={card} allow={allow} changeCardState={changeCardState} bind:this={cardElements[card.id]}/>
         {/each}
-        <MyButton />
+        <SendBtn text="pass" />
+        <SendBtn text="send" on:click={onSend}/>
 
-    </div>
-    <div class="buttons">
-        <button>Bet</button>
     </div>
 </div>
 
 <style lang="scss">
     .me-area {
         .cards-box {
-            // border: 1px solid #ccc;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-gap: 5px;

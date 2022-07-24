@@ -1,26 +1,33 @@
+<svelte:options accessors={true}/>
+
 <script lang="ts">;
     import { SuiteType, type CardType } from '../types/CardType';
     export let card: CardType;
     export let allow = () : boolean => false;
-    export let changeCardState = (isSelected: boolean) : void => {};
+    export let changeCardState = (isSelected: boolean, cardType: CardType) : void => {};
 
     let src = "images/spade-2.jpg";
 
-    if (card.suite === SuiteType.Spades ) {
+    if (card.suite === SuiteType.Hearts ) {
         src = "images/spade-2.jpg";
     }
 
-    let selected = false;
+    export let selected = false;
+
+    export const setBlank = () => {
+        selected = false;
+        src = "";
+    }
 
     const onChangeState = () => {
         if (selected ===true) {
-            changeCardState(false);
+            changeCardState(false, card);
             selected = false;
             return;
         }
 
         if (allow()) {
-            changeCardState(true);
+            changeCardState(true, card);
             selected = true;
             return;
         }
