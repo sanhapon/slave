@@ -40,8 +40,8 @@
             justify-content: center;
 
             > div {
-                padding: 60px;
-                margin: 40px;
+                padding: 90px;
+                margin: 9px;
                 background-color: #2e7d32;
                 border-radius: 5rem;
                 border: 2px solid #fbc02d;
