@@ -1,14 +1,27 @@
 <script lang="ts">
     import Me from '../components/Me.svelte';
     import Table from '../components/Table.svelte';
+
+    import type { CardType } from '../types/CardType';
+
+    let cards: CardType[];
+
+    const handleISendCards = (e: CustomEvent<CardType[]>) => {
+        cards = e.detail.cards;
+    }
+
 </script>
 
 <div class="container">
     <div class="p1">Player 1</div>
     <div class="p2"> 2</div>
-    <div class="tab"><Table /></div>
+    <div class="tab">
+        <Table bind:cards={cards}/>
+    </div>
     <div class="p3">Player 3</div>
-    <div class="me"><Me /></div>
+    <div class="me">
+        <Me on:sendCards={handleISendCards} />
+    </div>
 </div>
 
 <style lang="scss">

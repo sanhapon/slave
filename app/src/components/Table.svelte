@@ -1,17 +1,16 @@
 <script lang="ts">
+    import type { CardType } from 'src/types/CardType';
     import Card from './Card.svelte';
 
-    let cards: Card[] = []
+    export let cards: CardType[] = [];
 
-    export const addCard = (card: Card) => {
-        cards = [...cards, card];
-    }
+    $: console.log("cards:" + cards);
 
 </script>
 
 <div class="table">
     {#each cards as card}
-        {card}
+        <Card card={card} />
     {/each}
 </div>
 

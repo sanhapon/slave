@@ -1,15 +1,15 @@
 <script lang="ts">
-import { prevent_default } from 'svelte/internal';
-
+    import { createEventDispatcher } from 'svelte';
     import { SuiteType, type CardType } from '../types/CardType';
     import Card from './Card.svelte';
     import SendBtn from './SendBtn.svelte';
 
-    let cardElements: Card[] = []
+    const dispatch = createEventDispatcher();
 
     let count = 0;
     let cards: CardType[] = [];
     let selectedCards: CardType[] = [];
+    let cardElements: Card[] = []
 
     for (let i=0; i<13; i++) {
         cards.push(
@@ -25,7 +25,7 @@ import { prevent_default } from 'svelte/internal';
 
         if (!isSelected) {
             count--;
-            selectedCards = selectedCards.filter(item => (item.id !== card.id || item.suite !== item.suite));
+            selectedCards = selectedCards.filter(item => (item.id !== card.id || item.suite !== card.suite));
         }
     };
     
@@ -39,6 +39,8 @@ import { prevent_default } from 'svelte/internal';
             x.setBlank();
         }
         count = 0;
+
+        dispatch('sendCards', { cards: selectedCards });
     }
 
 </script>
