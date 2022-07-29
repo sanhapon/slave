@@ -2,22 +2,26 @@
 
 <script lang="ts">;
     import { SuiteType, type CardType } from '../types/CardType';
+
     export let card: CardType;
     export let allow = () : boolean => false;
     export let changeCardState = (isSelected: boolean, cardType: CardType) : void => {};
-
-    let src = "images/spade-2.jpg";
-
-    if (card.suite === SuiteType.Hearts ) {
-        src = "images/spade-2.jpg";
-    }
-
     export let selected = false;
-
     export const setBlank = () => {
         selected = false;
         src = "";
     }
+
+    let suiteStr : string = "";
+
+    switch (card.suite) {
+        case SuiteType.Spades: suiteStr = "spades"; break;
+        case SuiteType.Clubs: suiteStr = "clubs"; break;
+        case SuiteType.Hearts: suiteStr = "hearts"; break;
+        default: suiteStr = "diamonds";
+    }
+
+    let src = `/svg-cards/${card.id}_of_${suiteStr.toLocaleLowerCase()}.svg`;
 
     const onChangeState = () => {
         if (selected ===true) {
@@ -40,7 +44,6 @@
 <div class="{containerStyle}">
     <figure on:click="{onChangeState}">
         <img class="container-card" {src} alt="none" />
-        <!-- <figcaption></figcaption> -->
     </figure>
 </div>
 

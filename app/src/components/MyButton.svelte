@@ -3,7 +3,6 @@
     export let text = '';
 
     const handleClick = () => {
-        console.log("click");
         count = count + 1;
     }
 </script>

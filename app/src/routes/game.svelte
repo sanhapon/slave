@@ -1,26 +1,52 @@
 <script lang="ts">
+import { debug } from 'svelte/internal';
+
     import Me from '../components/Me.svelte';
     import Table from '../components/Table.svelte';
-
     import type { CardType } from '../types/CardType';
 
-    let cards: CardType[];
+    let toTable: CardType[] = [];
+    let me: CardType[] = [];
 
     const handleISendCards = (e: CustomEvent<CardType[]>) => {
-        cards = e.detail.cards;
+        toTable = e.detail.cards;
     }
 
+    const alreadySelected : CardType[] = [];
+
+    const startGame = () => {
+        let done = false;
+
+        let id = Math.floor(Math.random() * 13) + 1;
+        let suite = Math.floor(Math.random() * 4) + 1;
+
+        while(!done) {
+            if (alreadySelected.find((item) => item.id === id && item.suite === suite)) {
+                id = Math.floor(Math.random() * 12) + 2;
+                suite = Math.floor(Math.random() * 3) + 1;
+            } else {
+                const selected : CardType = { id, suite };
+                me.push(selected);
+                alreadySelected.push(selected);
+                
+                if (me.length === 13)
+                    done = true;
+            }
+        }
+    }
+
+    startGame();
 </script>
 
 <div class="container">
     <div class="p1">Player 1</div>
     <div class="p2"> 2</div>
     <div class="tab">
-        <Table bind:cards={cards}/>
+        <Table bind:cards={toTable}/>
     </div>
     <div class="p3">Player 3</div>
     <div class="me">
-        <Me on:sendCards={handleISendCards} />
+        <Me on:sendCards={handleISendCards} cards={me} />
     </div>
 </div>
 

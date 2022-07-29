@@ -1,21 +1,18 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import { SuiteType, type CardType } from '../types/CardType';
+    import type { CardType } from '../types/CardType';
     import Card from './Card.svelte';
     import SendBtn from './SendBtn.svelte';
 
     const dispatch = createEventDispatcher();
 
-    let count = 0;
-    let cards: CardType[] = [];
-    let selectedCards: CardType[] = [];
-    let cardElements: Card[] = []
+    export let cards: CardType[];
 
-    for (let i=0; i<13; i++) {
-        cards.push(
-            { id: i + 1, suite: SuiteType.Hearts }
-        );
-    }
+    cards = cards.sort((a, b) => a.id < b.id? -1: 1);
+
+    let count = 0;
+    let selectedCards: CardType[] = [];
+    let cardElements: Card[] = [];
 
     const changeCardState = (isSelected: boolean, card: CardType) : void => {
         if (isSelected && allow()) {
