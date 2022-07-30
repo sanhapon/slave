@@ -52,7 +52,7 @@ import { debug } from 'svelte/internal';
 <style lang="scss">
     .container {
         width: 100vw;
-        height: 100vh;
+        height: 88vh;
         margin: 0 auto;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
