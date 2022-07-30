@@ -1,19 +1,17 @@
 <svelte:options accessors={true}/>
 
-<script lang="ts">;
+<script lang="ts">
+import { afterUpdate } from 'svelte';
+;
     import { SuiteType, type CardType } from '../types/CardType';
 
     export let card: CardType;
     export let allow = () : boolean => false;
     export let changeCardState = (isSelected: boolean, cardType: CardType) : void => {};
     export let selected = false;
-    export const setBlank = () => {
-        selected = false;
-        src = "";
-    }
+    export let removed = false;
 
     let suiteStr : string = "";
-
     switch (card.suite) {
         case SuiteType.Spades: suiteStr = "spades"; break;
         case SuiteType.Clubs: suiteStr = "clubs"; break;
@@ -21,9 +19,8 @@
         default: suiteStr = "diamonds";
     }
 
-    let src = `/svg-cards/${card.id}_of_${suiteStr.toLocaleLowerCase()}.svg`;
-
     const onChangeState = () => {
+        if (removed) return;
         if (selected ===true) {
             changeCardState(false, card);
             selected = false;
@@ -37,17 +34,20 @@
         }
     }
 
-    $: containerStyle = selected ? 'container selected' : 'container';
-</script>
+    $: src = removed ? "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" 
+                        : `/svg-cards/${card.id}_of_${suiteStr.toLocaleLowerCase()}.svg`;
 
+    $: containerStyle = removed ? 'container removed' : selected ? 'container selected' : 'container';
+</script>
 
 <div class="{containerStyle}">
     <figure on:click="{onChangeState}">
-        <img class="container-card" {src} alt="none" />
+        <img class="container-card" {src} alt="none"/>
     </figure>
 </div>
 
 <style lang="scss">
+
     .container {
         height: 100px;
         display: inline-flex;
@@ -62,7 +62,15 @@
 
     .selected {
         align-items: center;
-        border: 1px solid #ccc;
-        background-color: #55f;
+        border: 0.1rem dashed #2e7d32;
+    }
+
+    .removed {
+        height: 100%;
+        :first-child {
+            :first-child {
+                border: 0.1rem dashed #2e7d32;
+            }
+        }
     }
 </style>

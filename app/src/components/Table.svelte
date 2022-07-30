@@ -4,8 +4,6 @@
 
     export let cards: CardType[] = [];
 
-    $: console.log("cards:" + cards);
-
 </script>
 
 <div class="table">

@@ -4,15 +4,14 @@
     import Card from './Card.svelte';
     import SendBtn from './SendBtn.svelte';
 
-    const dispatch = createEventDispatcher();
-
     export let cards: CardType[];
-
     cards = cards.sort((a, b) => a.id < b.id? -1: 1);
+
+    const dispatch = createEventDispatcher();
 
     let count = 0;
     let selectedCards: CardType[] = [];
-    let cardElements: Card[] = [];
+    let toRemoveCards: CardType[];
 
     const changeCardState = (isSelected: boolean, card: CardType) : void => {
         if (isSelected && allow()) {
@@ -31,25 +30,23 @@
     }
 
     const onSend = () => {
-        for(let card of selectedCards) {
-            const x: Card = cardElements[card.id];
-            x.setBlank();
-        }
-        count = 0;
 
+        count = 0;
+        selectedCards = selectedCards.map((ct) =>  {return {...ct, removed: true}} );
         dispatch('sendCards', { cards: selectedCards });
     }
 
+    $: toRemove = (c: CardType) => selectedCards.find(x => x.key === c.key && x.removed) !== undefined;
 </script>
 
 <div class='me-area'>
     <div class="cards-box">
-        {#each cards as card}
-            <Card card={card} allow={allow} changeCardState={changeCardState} bind:this={cardElements[card.id]}/>
+        {#each cards as card} 
+            <Card card={card} allow={allow} changeCardState={changeCardState}
+                removed={toRemove(card)} />
         {/each}
         <SendBtn text="pass" />
         <SendBtn text="send" on:click={onSend}/>
-
     </div>
 </div>
 
@@ -60,13 +57,7 @@
             grid-template-columns: repeat(5, 1fr);
             grid-gap: 5px;
             margin: 10px;
-        }
-
-        .buttons { 
-            margin: 50px auto;
-            border: 1px solid #ccc;
-            display: flex;
-            justify-content: center;
+            padding: 4px;
         }
     }
 

@@ -16,16 +16,15 @@ import { debug } from 'svelte/internal';
 
     const startGame = () => {
         let done = false;
-
-        let id = Math.floor(Math.random() * 13) + 1;
-        let suite = Math.floor(Math.random() * 4) + 1;
+        let id = -1;
+        let suite = 0;
 
         while(!done) {
-            if (alreadySelected.find((item) => item.id === id && item.suite === suite)) {
-                id = Math.floor(Math.random() * 12) + 2;
+            if (id === -1 || alreadySelected.find((item) => item.id === id && item.suite === suite)) {
+                id = Math.floor(Math.random() * 13) + 2;
                 suite = Math.floor(Math.random() * 3) + 1;
             } else {
-                const selected : CardType = { id, suite };
+                const selected : CardType = { id, suite, removed:false, key:`${id}_${suite}`};
                 me.push(selected);
                 alreadySelected.push(selected);
                 

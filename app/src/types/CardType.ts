@@ -1,8 +1,10 @@
 export enum SuiteType {
-    Diamonds=4, Hearts=3, Clubs=2, Spades=1
+  Clubs=1, Diamonds=2, Hearts=3, Spades=4
   }
 
 export type CardType = {
     id: number;
     suite: SuiteType;
+    removed: boolean;
+    key: string;
 }
