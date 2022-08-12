@@ -5,6 +5,6 @@ export enum SuiteType {
 export type CardType = {
     id: number;
     suite: SuiteType;
-    removed: boolean;
     key: string;
+    removed: boolean;
 }

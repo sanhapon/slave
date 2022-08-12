@@ -1,8 +1,6 @@
 <svelte:options accessors={true}/>
 
 <script lang="ts">
-import { afterUpdate } from 'svelte';
-;
     import { SuiteType, type CardType } from '../types/CardType';
 
     export let card: CardType;
@@ -10,6 +8,7 @@ import { afterUpdate } from 'svelte';
     export let changeCardState = (isSelected: boolean, cardType: CardType) : void => {};
     export let selected = false;
     export let removed = false;
+    export let isSmallSize = false;
 
     let suiteStr : string = "";
     switch (card.suite) {
@@ -40,7 +39,7 @@ import { afterUpdate } from 'svelte';
     $: containerStyle = removed ? 'container removed' : selected ? 'container selected' : 'container';
 </script>
 
-<div class="{containerStyle}">
+<div class="{containerStyle} {isSmallSize? 'small' : 'big'}">
     <figure on:click="{onChangeState}">
         <img class="container-card" {src} alt="none"/>
     </figure>
@@ -57,6 +56,14 @@ import { afterUpdate } from 'svelte';
         &-card {
             width: 55px;
             height: 75px;
+        }
+    }
+
+    .small {
+        height: 50px;
+        img {
+            width: 30px;
+            height: 50px;
         }
     }
 

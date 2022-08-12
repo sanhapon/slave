@@ -40,6 +40,7 @@
 </script>
 
 <div class='me-area'>
+    <span>Me</span>
     <div class="cards-box">
         {#each cards as card} 
             <Card card={card} allow={allow} changeCardState={changeCardState}
@@ -52,6 +53,7 @@
 
 <style lang="scss">
     .me-area {
+        padding-top: 15px;
         .cards-box {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
